@@ -20,32 +20,31 @@ module.exports = function (repository, branch, tmpFolder) {
   }
 
   function removeTmpRepoFolder(cb) {
-    if (fs.lstatSync(tmpRepoFolder).isDirectory()) {
-      rimraf(tmpRepoFolder, cb);
-    }
-  }
-
-  function createTmpRepoFolder(cb) {
-    if (!fs.lstatSync(tmpRepoFolder).isDirectory()) {
-      mkdirp(tmpRepoFolder, cb);
+    gutil.log('Removing tmp repo folder');
+    try {
+      if (fs.lstatSync(tmpRepoFolder).isDirectory()) {
+        rimraf(tmpRepoFolder, cb);
+      }
+    } catch (err) {
+      cb(null);
     }
   }
 
   function cmdLog(cmd, cmdText) {
     cmd.on('data', function (data) {
-      gutil.log(data.toString());
+      gutil.log(cmdText + ': ' + data.toString().trim());
     });
     cmd.stderr.on('data', function (data) {
-      gutil.log(cmdText + ': ' + data.toString());
+      gutil.log(cmdText + ': ' + data.toString().trim());
     });
     cmd.stdout.on('data', function (data) {
-      gutil.log(cmdText + ': ' + data.toString());
+      gutil.log(cmdText + ': ' + data.toString().trim());
     });
   }
 
   function cloneRemoteRepository(cb) {
     gutil.log('Cloning remote repository');
-    var cmd = spawn('git', ['clone', remoteRepository]);
+    var cmd = spawn('git', ['clone', remoteRepository, tmpRepoFolder]);
     cmd.on('close', function (code) {
       if (code) {
         return cb('git clone error with code: ' + code);
@@ -57,7 +56,7 @@ module.exports = function (repository, branch, tmpFolder) {
 
   function createLocalBranch(cb) {
     gutil.log('Creating remote branch');
-    var cmd = spawn('git', ['branch', remoteBranch]);
+    var cmd = spawn('git', ['checkout', '-b', remoteBranch], {cwd: tmpRepoFolder});
     cmd.on('close', function (code) {
       if (code) {
         return cb('git clone error with code: ' + code);
@@ -69,7 +68,7 @@ module.exports = function (repository, branch, tmpFolder) {
 
   function gitPush(cb) {
     gutil.log('Pushing to remote repository');
-    var cmd = spawn('git', ['push', 'origin', options.remoteBranch], {cwd: tmpRepoFolder});
+    var cmd = spawn('git', ['push', 'origin', remoteBranch], {cwd: tmpRepoFolder});
     cmd.on('close', function (code) {
       if (code !== 0) {
         return cb('git push exited with code ' + code);
@@ -80,22 +79,21 @@ module.exports = function (repository, branch, tmpFolder) {
   }
 
   return through.obj(function (file, enc, cb) {
-    callback(null, file);
+    cb(null, file);
   }, function (done) {
     async.waterfall([
       removeTmpRepoFolder,
-      createTmpRepoFolder,
       cloneRemoteRepository,
       createLocalBranch,
-      gitPush
+      gitPush,
+      removeTmpRepoFolder
     ], function (err) {
-      removeTmpRepoFolder(function(err) {
-        if(err) {
-          done(err);
-        } else {
-          done(null);
-        }
-      });
+      if (err) {
+        done(err);
+      } else {
+        done();
+      }
     });
   });
+
 };
