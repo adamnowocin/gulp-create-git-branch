@@ -1,5 +1,5 @@
 # gulp-create-git-branch
-> Gulp wrapper for [create-git-branch (https://github.com/adamnowocin/create-git-branch)]
+> Gulp wrapper for **create-git-branch** (https://github.com/adamnowocin/create-git-branch)
 
 ## Installation
 
