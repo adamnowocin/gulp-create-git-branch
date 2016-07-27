@@ -15,7 +15,7 @@ Install the package with npm and add it to your development dependencies:
 var branch = require('gulp-create-git-branch');
 
 gulp.task('branch', function() {
-  return gulp.src('dist/**/*', { read: false }).pipe(
+  return gulp.src('').pipe(
     branch('git@github.com:adamnowocin/gulp-create-git-branch.git', '1.0.0')
   );
 });
@@ -27,7 +27,7 @@ gulp.task('branch', function() {
 var branch = require('gulp-create-git-branch');
 
 gulp.task('branch', function() {
-  return gulp.src('dist/**/*', { read: false }).pipe(
+  return gulp.src('').pipe(
     branch('git@github.com:adamnowocin/gulp-create-git-branch.git', '1.0.0', 'tmp-repo')
   );
 });
