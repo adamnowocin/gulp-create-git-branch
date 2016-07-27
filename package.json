@@ -1,7 +1,7 @@
 {
   "name": "gulp-create-git-branch",
   "main": "index.js",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "It creates a new branch in the specified repository",
   "author": "Adam Nowocin <adam.nowocin@gmail.com>",
   "license": "MIT",
@@ -18,10 +18,7 @@
     "gulp"
   ],
   "dependencies": {
-    "async": "^1.0.0",
-    "gulp-util": "^3.0.4",
-    "mkdirp": "^0.5.1",
-    "rimraf": "^2.3.4",
+    "create-git-branch": "0.0.1",
     "through2": "^0.6.5"
   },
   "scripts": {

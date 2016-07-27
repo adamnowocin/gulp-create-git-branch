@@ -1,5 +1,5 @@
 # gulp-create-git-branch
-> It creates a new branch in the specified repository
+> Gulp wrapper for [create-git-branch (https://github.com/adamnowocin/create-git-branch)]
 
 ## Installation
 
