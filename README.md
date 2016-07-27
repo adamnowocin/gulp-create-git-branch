@@ -15,19 +15,21 @@ Install the package with npm and add it to your development dependencies:
 var branch = require('gulp-create-git-branch');
 
 gulp.task('branch', function() {
-  return gulp.src('dist/**/*', { read: false })
-    .pipe(branch('git@github.com:adamnowocin/gulp-create-git-branch.git', '1.0.0'));
+  return gulp.src('dist/**/*', { read: false }).pipe(
+    branch('git@github.com:adamnowocin/gulp-create-git-branch.git', '1.0.0')
+  );
 });
 ```
 
-### Specyfy tmp repository folder
+### Specify temp repository folder
 
 ```javascript
 var branch = require('gulp-create-git-branch');
 
 gulp.task('branch', function() {
-  return gulp.src('dist/**/*', { read: false })
-    .pipe(branch('git@github.com:adamnowocin/gulp-create-git-branch.git', '1.0.0', 'tmp-repo'));
+  return gulp.src('dist/**/*', { read: false }).pipe(
+    branch('git@github.com:adamnowocin/gulp-create-git-branch.git', '1.0.0', 'tmp-repo')
+  );
 });
 ```
 
